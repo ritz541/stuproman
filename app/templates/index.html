@@ -1,10 +1,65 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="jumbotron">
-        <h1 class="display-4">Welcome, {{ current_user.username }}!</h1>
-        <p class="lead">This is your project management dashboard.</p>
-        <hr class="my-4">
-        <p>Start managing your projects and collaborating with other students.</p>
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h1 class="display-4">Welcome, {{ current_user.username }}!</h1>
+            <p class="lead">Manage your projects and collaborate with others.</p>
+        </div>
+        <div class="col-md-4 text-end">
+            <a href="{{ url_for('projects.create_project') }}" class="btn btn-primary btn-lg">
+                <i class="fas fa-plus"></i> Create New Project
+            </a>
+        </div>
     </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Recent Projects</h5>
+                    <a href="{{ url_for('projects.list_projects') }}" class="btn btn-sm btn-outline-primary">View All Projects</a>
+                </div>
+                <div class="card-body">
+                    {% if recent_projects %}
+                        <div class="list-group">
+                            {% for project in recent_projects %}
+                                <a href="{{ url_for('projects.view_project', project_id=project.id) }}" 
+                                   class="list-group-item list-group-item-action">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h5 class="mb-1">{{ project.name }}</h5>
+                                        <span class="badge bg-{% if project.status == 'active' %}success{% elif project.status == 'completed' %}info{% elif project.status == 'on_hold' %}warning{% else %}danger{% endif %}">
+                                            {{ project.status|title }}
+                                        </span>
+                                    </div>
+                                    <p class="mb-1">{{ project.description[:150] }}{% if project.description|length > 150 %}...{% endif %}</p>
+                                    <small class="text-muted">Last updated: {{ project.updated_at.strftime('%Y-%m-%d') }}</small>
+                                </a>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p class="text-muted">No projects yet. <a href="{{ url_for('projects.create_project') }}">Create your first project!</a></p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Quick Actions</h5>
+                </div>
+                <div class="list-group list-group-flush">
+                    <a href="{{ url_for('projects.create_project') }}" class="list-group-item list-group-item-action">
+                        Create New Project
+                    </a>
+                    <a href="{{ url_for('projects.list_projects') }}" class="list-group-item list-group-item-action">
+                        View All Projects
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

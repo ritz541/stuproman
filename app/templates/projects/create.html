@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h1>Create New Project</h1>
+    <div class="row">
+        <div class="col-md-8">
+            <form method="POST" action="{{ url_for('projects.create_project') }}">
+                {{ form.hidden_tag() }}
+                <div class="mb-3">
+                    {{ form.name.label(class="form-label") }}
+                    {{ form.name(class="form-control") }}
+                    {% for error in form.name.errors %}
+                        <span class="text-danger">{{ error }}</span>
+                    {% endfor %}
+                </div>
+                <div class="mb-3">
+                    {{ form.description.label(class="form-label") }}
+                    {{ form.description(class="form-control", rows="4") }}
+                    {% for error in form.description.errors %}
+                        <span class="text-danger">{{ error }}</span>
+                    {% endfor %}
+                </div>
+                <div class="mb-3">
+                    {{ form.goals.label(class="form-label") }}
+                    <small class="text-muted d-block mb-2">Enter each goal on a new line</small>
+                    {{ form.goals(class="form-control", rows="4") }}
+                    {% for error in form.goals.errors %}
+                        <span class="text-danger">{{ error }}</span>
+                    {% endfor %}
+                </div>
+                <div class="mb-3">
+                    {{ form.requirements.label(class="form-label") }}
+                    <small class="text-muted d-block mb-2">Enter each requirement on a new line</small>
+                    {{ form.requirements(class="form-control", rows="4") }}
+                    {% for error in form.requirements.errors %}
+                        <span class="text-danger">{{ error }}</span>
+                    {% endfor %}
+                </div>
+                <div class="mb-3">
+                    {{ form.status.label(class="form-label") }}
+                    {{ form.status(class="form-select") }}
+                    {% for error in form.status.errors %}
+                        <span class="text-danger">{{ error }}</span>
+                    {% endfor %}
+                </div>
+                <div class="mb-3">
+                    {{ form.submit(class="btn btn-primary") }}
+                    <a href="{{ url_for('projects.list_projects') }}" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Tips for Creating a Project</h5>
+                    <ul class="card-text">
+                        <li>Give your project a clear, descriptive name</li>
+                        <li>Write a detailed description of what the project aims to achieve</li>
+                        <li>Break down your goals into specific, achievable objectives</li>
+                        <li>List all requirements needed to complete the project</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
